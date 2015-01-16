@@ -115,14 +115,21 @@ def create_system_tml(timeline):
                 eid = maxEID
                 maxEID += 1
             else:
+                # the event is in the gold-standard (at least one)
                 if (event_list.count(event) < 1):
                     eid = gold_event_id[gold_event_list.index(event)]
                 else:
                     # same event already in the timeline, get the next one
+                    # if there is one
                     next = event_list.count(event)
                     idx = gold_event_list.index(event)
-                    pos = gold_event_list.index(event,idx+next)
-                    eid = gold_event_id[pos]          
+                    #if event_list.count(event) > (idx+next):
+                    if event_list.count(event) < gold_event_list.count(event):
+                        pos = gold_event_list.index(event,idx+next)
+                        eid = gold_event_id[pos]          
+                    else:
+                        eid = maxEID
+                        maxEID += 1
             out.write('<EVENT class="OCCURRENCE" eid="e'+str(eid)+'">'+event+'</EVENT>\n')
             event_dict[str(eid)+'-order'] = order
             event_list.append(event)
@@ -153,7 +160,10 @@ def create_system_tml(timeline):
 
 
 #The gold timeline comes ordered. If not, call the script for ordering timelines: order_timeline
-gold_timeline = open(tmp_folder+'/'+gold_file).read()
+# gold_timeline = open(tmp_folder+'/'+gold_file).read()
+# create_gold_tml(gold_timeline)
+gold_text = open(tmp_folder+'/'+gold_file).read()
+gold_timeline = order_timeline(gold_text)
 create_gold_tml(gold_timeline)
 
 system_text = open(tmp_folder+'/'+system_file).read()

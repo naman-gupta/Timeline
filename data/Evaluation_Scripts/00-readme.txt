@@ -187,7 +187,9 @@ In order to evaluate a single timeline with only ordering:
 
 $ ./evaluation_timeline_ord.py tmp_dir [GS file] [Answer file]
 
-NOTE: The events with the position 0 are not considered by the evaluation tool.
+Note: If with the information available it's not possible to order an
+event, then the event is placed at the beginning of the TimeLine with
+0 as position. These events are not considered by the evaluation tool.
 
 Authors
 -------
